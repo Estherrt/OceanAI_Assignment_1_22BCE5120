@@ -1,0 +1,58 @@
+UI/UX GUIDELINES
+
+1. General Page UI/UX
+    1.1. The entire page uses a light blue background: rgb(187, 208, 230).
+    1.2. The font used is "Times New Roman".
+    1.3. The main title "E-Shop Checkout" must be centered.
+    1.4. The default spacing: 40px margin around the page.
+
+2. Product Section UI/UX
+    2.1. Products must be displayed in "product-card" boxes.
+    2.2. The "product-card" box must include Product Name , price and the "Add to Cart" button which must be center aligned with font-size: 18px.
+    2.3. The "Add to Cart" button must have a padding of 10px 12px.
+    2.4. The "product-card" boxes must be arranged side-by-side using flex with a gap of 20px.
+    2.5. The "product-card" boxes must have a light grey border with 8px border radius and a soft drop shadow (0 0 8px rgba(0,0,0,0.2))
+
+3. Cart UI/UX
+    3.1. When the cart is empty, the cart area must display "Cart is empty".
+    3.2. As each item is added to cart, the item must appear on a separate row.
+    3.3. The Cart item layout must include Product name, price, the quantity of the product.
+    3.4. The "Remove" button must be displayed next to the quantity of the product.
+
+4. Price Calculation UI/UX
+    4.1. Total price must always appear below the cart.
+    4.2. The price amount must update automatically as:
+        - quantity of the product changes
+        - items are added or removed
+        - discount code is applied
+        - shipping charges are applied
+
+5. Discount Code UI/UX
+    5.1. "Discount Code" heading and input must appear on the same line.
+    5.2. The "Apply" button must have a smaller padding(4px 8px) compared to other buttons and must be placed immediately beside the input field.
+    5.3. The error message fr invalid discount must appear in red below the code input.
+
+6. User Details Form UI/UX
+    6.1. Each input field must have its own label above it.
+    6.2. Errors must display in red text directly below inputs.
+    6.3. The "Name" and "Address" field field must not be empty.
+    6.4. The "Email" field must follow the regex pattern.
+    6.5. The User form validation feedback must be shown instantly on clicking “Pay Now”.
+
+7. Shipping UI/UX
+    7.1. Shipping options must be shown using radio buttons.
+    7.2. “Standard” shipping is selected by default.
+    7.3. “Express" shipping must update the total price by adding Rs. 100.
+
+8. Payment Method UI/UX
+    8.1. Payment method options shown through radio buttons.
+    8.2. “Credit Card” payment option is selected by default.
+    8.3. "Pay Now" button must be dark grey (rgb(65, 61, 69)) with white text.
+    8.4. The successful payment message must be displayed in green and will appear only when the form in valid and the cart is not empty.
+    8.5. If the cart is empty, the alert box displays “Your cart is empty!”.
+    8.6. Errors must be cleared only after fields are corrected.
+
+9. Errr & Success Message UI/UX
+    9.1. The error messages uses red color
+    9.2. The success messages uses green color
+    9.3. Messages must never overlap or appear cluttered.
