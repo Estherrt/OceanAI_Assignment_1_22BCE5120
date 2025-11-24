@@ -166,7 +166,7 @@ with st.expander("Upload Files"):
             st.write("Stored in ChromaDB:", collection_name)
     
 
-st.title("Phase 2: Autonomous QA Agent")
+st.title("Phase 2: Test Case Generation Agent")
 
 with st.expander("Generate Test Cases with QA Agent"):
     user_query = st.text_area(
@@ -412,6 +412,7 @@ OUTPUT:
 if "script" in st.session_state:
     st.subheader("Generated Selenium Script")
     st.code(st.session_state["script"], language="python")
+
 
 
 
