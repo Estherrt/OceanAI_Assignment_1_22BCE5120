@@ -410,7 +410,8 @@ OUTPUT:
 
 
 if "script" in st.session_state:
-    st.subheader("Generated Selenium Script (Persistent)")
+    st.subheader("Generated Selenium Script")
     st.code(st.session_state["script"], language="python")
+
 
 
