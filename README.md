@@ -12,6 +12,8 @@ cd <repository-folder>
 2. Install dependencies from the provided requirements.txt:
 pip install -r requirements.txt
 
+3. Create a .streamlit folder and insert secrets.toml file
+
 Running the application:
 streamlit run app.py
 
