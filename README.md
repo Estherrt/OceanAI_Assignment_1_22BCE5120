@@ -13,7 +13,6 @@ cd <repository-folder>
 pip install -r requirements.txt
 
 Running the application:
-Run the Streamlit app using:
 streamlit run app.py
 
 Usage Examples:
