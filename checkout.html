@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>E-Shop Checkout</title>
+    <style>
+        body {font-family: 'Times New Roman'; margin: 40px; background-color: rgb(187, 208, 230);}
+        button {padding: 10px 12px; margin-top: 10px;}
+        .error {color: red; font-size: 14px; margin-top: 20px;}
+        .success {color: green; font-size: 14px; margin-top: 20px;}
+        #paynow {background: rgb(65, 61, 69); color: white;}
+        #cart div {margin-bottom: 10px; }
+
+        #applydisc{
+            padding: 4px 8px;
+        }
+
+        #products{
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .product-card{
+            width: 250px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgb(0 0 0 / 20%);
+            text-align: center;
+            background-color: #ffffff;
+        }
+
+        .product-card p{
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align: center;">E-Shop Checkout</h1>
+    <h2>Products</h2>
+    <div id = "products">
+        <div class = "product-card">
+            <p>Black tank top - Rs. 150</p>
+            <button onclick="addToCart('Black tank top',150)">Add to Cart</button>
+        </div>
+        <div class = "product-card">
+            <p>Beige cargo pants - Rs. 1250</p>
+            <button onclick="addToCart('Beige cargo pants',1250)">Add to Cart</button>
+        </div>
+        <div class = "product-card">
+            <p>Black and white striped canvas shoes - Rs. 2500</p>
+            <button onclick="addToCart('Black and white striped canvas shoes',2500)">Add to Cart</button>
+        </div>
+    </div><br>
+
+    <h2>Cart Summary</h2>
+    <div id="cart">Cart is empty</div>
+
+    <p>Total Price: Rs <span id="totalprice">0</span></p>
+
+    <h4 style="display:inline-block; margin-right:10px;">Discount Code</h4>
+    <input id="discountcode" placeholder="Enter discount code">
+    <span id="discounterror" class="error"></span>
+    <button id="applydisc" onclick="applyDiscount()">Apply</button>
+
+    <h2>User Details</h2>
+    <label>Name</label><br>
+    <input id="username">
+    <div id="nameerror" class="error"></div><br>
+
+    <label>Email</label><br>
+    <input id="useremail">
+    <div id="emailerror" class="error"></div><br>
+
+    <label>Address</label><br>
+    <input id="useraddress">
+    <div id="addresserror" class="error"></div><br>
+
+    <h2>Shipping Method</h2>
+    <input type="radio" name="shipping" id="standard" checked  onchange="updateTotal()"> Standard - Free <br>
+    <input type="radio" name="shipping" id="express" onchange="updateTotal()"> Express - Rs. 100
+
+    <h2>Payment Method</h2>
+    <input type="radio" name="payment" id="creditcard" checked> Credit Card <br>
+    <input type="radio" name="payment" id="paypal"> PayPal
+
+    <br><br>
+    <button id="paynow" onclick="processPayment()">Pay Now</button>
+
+    <div id="paymentstatus"></div>
+
+    <script>
+        let cart = [];
+        let discountapplied = false;
+        let appliedcode = "";
+
+        function addToCart(name, price){
+            let item = cart.find(i => i.name === name);
+            if (item){
+                item.qty++;
+            } else{
+                cart.push({ name, price, qty: 1 });
+            }
+            renderCart();
+        }
+
+        function removeFromCart(name){
+            cart = cart.filter(item => item.name !== name);
+            renderCart();
+        }
+
+        function updateQty(name, qty){
+            let item = cart.find(i => i.name === name);
+            item.qty = parseInt(qty);
+            renderCart();
+        }
+
+        function renderCart(){
+            let cartDiv = document.getElementById("cart");
+            cartDiv.innerHTML = "";
+
+            if (cart.length === 0){
+                cartDiv.innerHTML = "Cart is empty";
+                document.getElementById("totalprice").textContent = "0";
+                return;
+            }
+
+            cart.forEach(item => {
+                let div = document.createElement("div");
+                div.innerHTML = `
+                    ${item.name} - Rs ${item.price}
+                    <input type="number" min="1" value="${item.qty}"
+                        onchange="updateQty('${item.name}', this.value)">
+                    <button onclick="removeFromCart('${item.name}')">Remove</button>
+                `;
+                cartDiv.appendChild(div);
+            });
+
+            updateTotal();
+        }
+
+        function applyDiscount(){
+            const code = document.getElementById("discountcode").value.trim();
+            const error = document.getElementById("discounterror");
+
+            if (code === "DISCOUNTFOR16" || code === "HALFPRICEOFF"){
+                discountapplied = true;
+                appliedcode = code;
+                error.textContent = "";
+            } else{
+                discountapplied = false;
+                appliedcode = "";
+                error.textContent = "Invalid code";
+            }
+            updateTotal();
+        }
+
+        function updateTotal() {
+            let total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+
+            if (discountapplied){
+                if (appliedcode === "DISCOUNTFOR16") total *= 0.84;
+                else if (appliedcode === "HALFPRICEOFF") total *= 0.5;
+            }
+
+            if (document.getElementById("express").checked) total += 100;
+
+            document.getElementById("totalprice").textContent = total.toFixed(2);
+        }
+
+        function processPayment(){
+            let valid = true;
+            const emailPattern = /^[A-Za-z][A-Za-z0-9._%+-]*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+            if (!document.getElementById("username").value.trim()){
+                document.getElementById("nameerror").textContent = "Name is required";
+                valid = false;
+            } else document.getElementById("nameerror").textContent = "";
+
+            const email = document.getElementById("useremail").value.trim();
+            if (!emailPattern.test(email)){
+                document.getElementById("emailerror").textContent = "Invalid email";
+                valid = false;
+            } else document.getElementById("emailerror").textContent = "";
+
+            if (!document.getElementById("useraddress").value.trim()){
+                document.getElementById("addresserror").textContent = "Address is required";
+                valid = false;
+            } else document.getElementById("addresserror").textContent = "";
+
+            if (cart.length === 0){
+                alert("Your cart is empty!");
+                valid = false;
+            }
+
+            if(valid){
+                document.getElementById("paymentstatus").innerHTML = "<p class='success'>Payment Successful!</p>";
+            } else{
+               document.getElementById("paymentstatus").innerHTML = ""; 
+            }
+        };
+
+    </script>
+
+
+</body>
+
+</html>
